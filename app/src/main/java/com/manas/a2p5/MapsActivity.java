@@ -29,7 +29,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public double latitude;
     public double longitude;
     private static final int REQUEST_CODE_LOC_PERMISSION = 1;
-    public  boolean ready = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        try {
+            mapFragment.getMapAsync(this);
+        }
+        catch (NullPointerException e){
+            Log.e("error exception","error in getMapAsync");
+        }
     }
 
     private void getpermission() {
@@ -53,7 +57,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void getCurrentLocation() {
         {
-
             LocationRequest locationRequest = new LocationRequest();
             locationRequest.setInterval(10000);
             locationRequest.setFastestInterval(3000);
@@ -71,7 +74,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             LocationServices.getFusedLocationProviderClient(MapsActivity.this)
                     .requestLocationUpdates(locationRequest, new LocationCallback() {
-
 
                         @Override
                         public void onLocationResult(LocationResult locationResult) {
@@ -118,7 +120,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         Log.e("app", String.valueOf(this.latitude) + this.longitude + " onReady");
 
     }
